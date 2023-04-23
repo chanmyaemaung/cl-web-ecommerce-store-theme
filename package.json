@@ -1,0 +1,21 @@
+{
+  "name": "clweb_ecommerce",
+  "version": "1.0.0",
+  "description": "CL Web Ecommerce Shopify Theme Store v1.0",
+  "private": "true",
+  "main": "index.js",
+  "scripts": {
+    "tailwind:dev": "pnpm exec tailwindcss -i ./src/tailwind.css -o ./assets/application.css --watch"
+  },
+  "keywords": [
+    "tailwindcss",
+    "shopify",
+    "ecommerce",
+    "theme"
+  ],
+  "author": "Chen Lay <info@chanmyaemaung.net>",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.3.1"
+  }
+}
