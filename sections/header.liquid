@@ -1,9 +1,18 @@
-<div class="relative bg-white">
+<div x-data="{ mobileMenuOpen: false }" class="relative bg-white">
   <div class="mx-auto px-4 sm:px-6">
-    <div class="flex justify-center items-center py-6 md:justify-start md:space-x-10">
+    <div class="flex justify-between items-center py-6 md:justify-start md:space-x-10">
       <!-- STORE NAME / STORE LOGO -->
       <div class="flex justify-start lg:flex-1 truncate">
         <h1 class="text-xl font-bold truncate">{{ shop.name }}</h1>
+      </div>
+
+      <div class="-mr-2 -my-2 ml-3 md:hidden">
+        <button
+          @click="mobileMenuOpen = true"
+          type="button"
+          class="bg-white p-2 inline-flex items-center justify-center focus:outline-none">
+          {% render 'icon-menu' %}
+        </button>
       </div>
 
       <!-- NAVIGATION MENU -->
@@ -64,6 +73,70 @@
 
         <a href="{{ routes.account_login_url }}" class="text-base text-gray-500 hover:text-gray-900">Login</a>
         <a href="{{ routes.account_register_url }}" class="text-base text-gray-500 hover:text-gray-900">Register</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE MENU CONTAINER -->
+  <div x-show="mobileMenuOpen" class="absolute z-10 top-0 inset-x-0 p-2 transform origin-top-left md:hidden">
+    <div class="shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 bg-white w-full">
+      <div class="p-5 divide-y-2 divide-gray-50">
+
+        <!-- MOBILE MENU HEADER TITLE PLUS CLOSE BUTTON -->
+        <div class="flex items-center justify-between pb-3">
+          <div>
+            <h1 class="text-lg text-gray-500">{{ shop.name }}</h1>
+          </div>
+          <div class="-mr-2">
+            <button
+              @click="mobileMenuOpen = !mobileMenuOpen"
+              type="button"
+              class="bg-white rounded-md p-2 text-gray-500">
+              <!-- {% render 'icon-close' %} -->
+              <img
+                src="https://cdn.shopify.com/s/files/1/0757/9366/2264/files/icon-close.svg"
+                alt="Close icon"
+                class="w-6 h-6">
+            </button>
+          </div>
+        </div>
+
+        <!-- NAVIGATION LINKS FOR MOBILE MENU -->
+        <div class="pt-3">
+          <nav class="grid gap-y-7">
+
+            {% for link in linklists.main-menu.links %}
+              {% assign link_handle = link.handle | replace: '-', '_' %}
+              {% if link.links != blank %}
+                <div x-data="{ {{ link_handle }}: false }" class="relative">
+                  <button
+                    @click="{{ link_handle }} = ! {{ link_handle }}"
+                    type="button"
+                    class="text-base text-gray-500 hover:text-gray-900 flex items-center justify-between w-full">
+                    <div>{{ link.title }}</div>
+                    <!-- {% render 'icon-dropdown' %} -->
+                    <img
+                      src="https://cdn.shopify.com/s/files/1/0757/9366/2264/files/icon-dropdown.svg"
+                      alt="Dropdown icon"
+                      class="w-5 h-5" />
+                  </button>
+
+                  <div x-show="{{ link_handle }}" class="grid gap-y-7 py-3">
+                    {% for childLink in link.links %}
+                      <a href="#" class="-m-3 p-3 mt-2 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
+                        <span class="ml-3 text-base font-medium text-gray-500">{{ childLink.title }}</span>
+                      </a>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% else %}
+                <a href="{{ link.url }}" class="-m-3 p-3 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
+                  {{ link.title }}
+                </a>
+              {% endif %}
+            {% endfor %}
+          </nav>
+        </div>
       </div>
     </div>
   </div>
